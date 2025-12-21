@@ -1,0 +1,162 @@
+---
+description: Go language conventions and idioms for backend services
+globs:
+  - "**/*.go"
+alwaysApply: false
+---
+
+# Go Development Standards
+
+## Project Structure
+
+```
+cmd/
+  └── <app>/           # Main applications
+      └── main.go
+internal/              # Private application code
+  ├── domain/          # Business logic and entities
+  ├── handler/         # HTTP/gRPC handlers
+  ├── repository/      # Data access layer
+  └── service/         # Business logic orchestration
+pkg/                   # Public libraries (use sparingly)
+```
+
+## Idioms
+
+### Accept Interfaces, Return Structs
+```go
+// Good: Accept interface
+func NewUserService(repo UserRepository) *UserService
+
+// Bad: Accept concrete type
+func NewUserService(repo *PostgresUserRepo) *UserService
+```
+
+### Error Handling
+```go
+// Always wrap errors with context
+if err != nil {
+    return fmt.Errorf("failed to fetch user %s: %w", userID, err)
+}
+
+// Use errors.Is and errors.As for error checking
+if errors.Is(err, ErrNotFound) {
+    return nil, status.Error(codes.NotFound, "user not found")
+}
+```
+
+### Nil Checks
+```go
+// Check nil before using pointers
+if user == nil {
+    return ErrUserNotFound
+}
+```
+
+## Testing
+
+### Table-Driven Tests
+```go
+func TestAdd(t *testing.T) {
+    tests := []struct {
+        name     string
+        a, b     int
+        expected int
+    }{
+        {"positive numbers", 1, 2, 3},
+        {"negative numbers", -1, -2, -3},
+        {"zero", 0, 0, 0},
+    }
+    
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            got := Add(tt.a, tt.b)
+            assert.Equal(t, tt.expected, got)
+        })
+    }
+}
+```
+
+### Use testify for assertions
+```go
+import "github.com/stretchr/testify/assert"
+import "github.com/stretchr/testify/require"
+
+// assert for non-fatal checks
+assert.Equal(t, expected, actual)
+
+// require for fatal checks (stops test on failure)
+require.NoError(t, err)
+```
+
+## Concurrency
+
+### Use channels for communication
+```go
+results := make(chan Result, len(items))
+var wg sync.WaitGroup
+
+for _, item := range items {
+    wg.Add(1)
+    go func(item Item) {
+        defer wg.Done()
+        results <- process(item)
+    }(item)
+}
+
+go func() {
+    wg.Wait()
+    close(results)
+}()
+```
+
+### Context for cancellation
+```go
+func DoWork(ctx context.Context) error {
+    select {
+    case <-ctx.Done():
+        return ctx.Err()
+    case result := <-workDone:
+        return handleResult(result)
+    }
+}
+```
+
+## HTTP Handlers
+
+```go
+func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
+    ctx := r.Context()
+    userID := chi.URLParam(r, "userID")
+    
+    user, err := h.userService.GetByID(ctx, userID)
+    if err != nil {
+        if errors.Is(err, domain.ErrNotFound) {
+            http.Error(w, "user not found", http.StatusNotFound)
+            return
+        }
+        http.Error(w, "internal error", http.StatusInternalServerError)
+        return
+    }
+    
+    json.NewEncoder(w).Encode(user)
+}
+```
+
+## Logging
+
+Use structured logging with slog:
+```go
+slog.Info("user created",
+    slog.String("user_id", user.ID),
+    slog.String("email", user.Email),
+)
+```
+
+## Dependencies
+
+- Router: `chi` or `gorilla/mux`
+- Testing: `testify`
+- Logging: `slog` (stdlib) or `zerolog`
+- Config: `envconfig` or `viper`
+- Database: `sqlx` or `pgx`
