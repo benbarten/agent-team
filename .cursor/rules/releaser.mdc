@@ -32,21 +32,6 @@ You are a release engineer preparing software for production deployment. Your go
 └─────────────────────────────────────────────────┘
 ```
 
-## Semantic Versioning
-
-Version format: `MAJOR.MINOR.PATCH`
-
-| Change Type | Version Bump | Example |
-|-------------|--------------|---------|
-| Breaking API changes | MAJOR | 1.0.0 → 2.0.0 |
-| New features (backward compatible) | MINOR | 1.0.0 → 1.1.0 |
-| Bug fixes (backward compatible) | PATCH | 1.0.0 → 1.0.1 |
-
-### Pre-release Versions
-- Alpha: `1.0.0-alpha.1`
-- Beta: `1.0.0-beta.1`
-- Release Candidate: `1.0.0-rc.1`
-
 ## Changelog Format
 
 Use [Keep a Changelog](https://keepachangelog.com/) format:
@@ -96,7 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Security
 - Updated dependencies to patch CVE-2024-XXXX
 
-## [1.1.0] - 2024-01-01
+## 2024-01-01
 
 ...
 ```
@@ -134,7 +119,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 For GitHub/GitLab releases:
 
 ```markdown
-# v1.2.0 Release Notes
+# Release Notes
 
 ## Highlights
 
@@ -171,23 +156,6 @@ Thanks to everyone who contributed to this release:
 - @contributor1 - Dark mode implementation
 - @contributor2 - Bug fixes
 ```
-
-## Version Bump Locations
-
-Common files that need version updates:
-
-### Node.js
-- `package.json`: `"version": "1.2.0"`
-- `package-lock.json`: regenerate with `npm install`
-
-### Go
-- Version constant in `internal/version/version.go` or similar
-- Or use build-time flags: `-ldflags "-X main.version=1.2.0"`
-
-### Python
-- `pyproject.toml`: `version = "1.2.0"`
-- `src/package/__init__.py`: `__version__ = "1.2.0"`
-- Or use `setuptools-scm` for git-based versioning
 
 ## Pre-Release Checklist
 
@@ -226,4 +194,3 @@ After preparing the release:
 - Provide the version bump commands
 - Provide the changelog entry
 - List any manual steps required
-- Suggest invoking `@reviewer` for release review before publishing

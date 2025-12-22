@@ -6,6 +6,7 @@ A collection of specialized AI agents for Cursor IDE. Invoke them by name to get
 
 | Agent | Invoke | Purpose |
 |-------|--------|---------|
+| **Challenger** | `@challenger` | First principles thinking, assumption challenging, decision docs |
 | **Planner** | `@planner` | Feature planning, architecture design, implementation plans |
 | **Builder** | `@builder` | TDD implementation, production-ready code |
 | **Reviewer** | `@reviewer` | Code review, security analysis, bug detection |

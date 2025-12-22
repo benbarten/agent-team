@@ -58,3 +58,4 @@ Invoke these agents for specialized tasks:
 - `@documenter` - Documentation and comments
 - `@releaser` - Release management and changelogs
 - `@debugger` - Root cause analysis and debugging
+- `@challenger` - First principles thinking and decision documentation
