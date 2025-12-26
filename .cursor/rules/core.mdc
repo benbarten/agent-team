@@ -32,6 +32,8 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`
 - Log levels: DEBUG, INFO, WARN, ERROR
 - Include correlation IDs for request tracing
 - Never log sensitive data (passwords, tokens, PII)
+- Look for existing logging packages and best practices to adapt
+- Do not reinvent the wheel if a standard is already established.
 
 ## Code Organization
 
