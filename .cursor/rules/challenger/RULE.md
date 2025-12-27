@@ -235,3 +235,4 @@ After challenging:
 - If more exploration needed → Suggest invoking `@planner` for detailed design
 - If implementation ready → Suggest invoking `@builder` to proceed
 - If concerns remain → Note what evidence would resolve them
+

@@ -61,3 +61,4 @@ Invoke these agents for specialized tasks:
 - `@releaser` - Release management and changelogs
 - `@debugger` - Root cause analysis and debugging
 - `@challenger` - First principles thinking and decision documentation
+

@@ -160,3 +160,4 @@ slog.Info("user created",
 - Logging: `slog` (stdlib) or `zerolog`
 - Config: `envconfig` or `viper`
 - Database: `sqlx` or `pgx`
+

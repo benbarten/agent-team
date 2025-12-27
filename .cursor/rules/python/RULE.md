@@ -266,3 +266,4 @@ Use `ruff` for linting and formatting:
 ruff check .
 ruff format .
 ```
+
